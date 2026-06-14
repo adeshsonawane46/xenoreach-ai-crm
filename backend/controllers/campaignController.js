@@ -15,11 +15,11 @@ export const getCampaigns = async (req, res, next) => {
 // Create a new campaign draft
 export const createCampaign = async (req, res, next) => {
   try {
-    const { 
-      name, 
-      targetSegment, 
-      channel, 
-      subject, 
+    const {
+      name,
+      targetSegment,
+      channel,
+      subject,
       content,
       objective,
       segmentLabel,
@@ -120,10 +120,10 @@ export const launchCampaign = async (req, res, next) => {
       });
     });
 
-    res.status(200).json({ 
-      success: true, 
-      data: campaign, 
-      message: `Campaign launched successfully. Dispatched simulation to ${customers.length} customers.` 
+    res.status(200).json({
+      success: true,
+      data: campaign,
+      message: `Campaign launched successfully. Dispatched simulation to ${customers.length} customers.`
     });
   } catch (error) {
     next(error);
@@ -146,7 +146,7 @@ export const queryAISegment = async (req, res, next) => {
       filter.totalSpend = { $gt: 5000 };
       traits.push('High Spenders (>₹5000)');
     }
-    
+
     if (lowerPrompt.includes('mumbai')) {
       filter.city = 'Mumbai';
       traits.push('Mumbai Metro');
@@ -176,7 +176,7 @@ export const queryAISegment = async (req, res, next) => {
     }
 
     const customers = await Customer.find(filter);
-    
+
     res.status(200).json({
       success: true,
       prompt,
@@ -198,7 +198,7 @@ export const queryAISegment = async (req, res, next) => {
 // Helper to parse dynamic fallback strategy when Gemini is offline or not configured
 const generateFallbackStrategy = (prompt) => {
   const lowerPrompt = prompt.toLowerCase();
-  
+
   // Default values
   let title = 'VIP Exclusive Perks';
   let targetSegment = 'High Value';
@@ -422,11 +422,11 @@ const compileFilter = (strategy, query) => {
       if (segLower.includes('mumbai')) filter.city = 'Mumbai';
       if (segLower.includes('delhi')) filter.city = 'Delhi';
       if (segLower.includes('bengaluru')) filter.city = 'Bengaluru';
-      
+
       if (segLower.includes('spend') || segLower.includes('premium')) {
         filter.totalSpend = { $gt: 5000 };
       }
-      
+
       if (segLower.includes('risk') || segLower.includes('inactive')) {
         filter.segment = 'At Risk';
       } else if (segLower.includes('new') || segLower.includes('recent')) {
