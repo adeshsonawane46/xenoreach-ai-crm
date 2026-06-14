@@ -1,0 +1,361 @@
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--surface);
+}
+
+.login-form-side {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 540px;
+  height: 100%;
+  background-color: var(--surface-container-lowest);
+  padding: 48px 48px;
+  overflow-y: auto;
+  z-index: 10;
+  border-right: 1px solid var(--outline-variant);
+}
+
+.login-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 48px;
+}
+
+.login-logo-box {
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-container);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.login-logo-svg {
+  width: 24px;
+  height: 24px;
+}
+
+.login-logo-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.login-header-group {
+  margin-bottom: 32px;
+}
+
+.login-title {
+  color: var(--on-surface);
+  margin-bottom: 8px;
+  font-size: 32px;
+}
+
+.login-subtitle {
+  color: var(--on-surface-variant);
+  font-size: 16px;
+}
+
+.login-error-box {
+  background-color: var(--error-container);
+  color: var(--on-error-container);
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-error-icon {
+  font-size: 20px;
+  color: var(--error);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.login-form-group-relative {
+  position: relative;
+}
+
+.login-password-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.login-password-label {
+  margin: 0;
+}
+
+.login-forgot-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.login-password-input-wrapper {
+  position: relative;
+}
+
+.login-password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+}
+
+.login-submit-btn {
+  height: 44px;
+  width: 100%;
+  font-weight: 600;
+}
+
+.login-divider-container {
+  position: relative;
+  margin: 40px 0;
+  text-align: center;
+}
+
+.login-divider-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  border-top: 1px solid var(--outline-variant);
+  z-index: 1;
+}
+
+.login-divider-text {
+  position: relative;
+  z-index: 2;
+  background-color: var(--surface-container-lowest);
+  padding: 0 16px;
+  font-size: 13px;
+  color: var(--on-surface-variant);
+}
+
+.login-social-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.login-social-btn {
+  height: 44px;
+}
+
+.login-social-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.login-footer-text {
+  margin-top: auto;
+  padding-top: 40px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--on-surface-variant);
+}
+
+.login-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.login-brand-side {
+  display: flex;
+  flex: 1;
+  position: relative;
+  background-color: var(--secondary-fixed-dim);
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+}
+
+.login-brand-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+}
+
+.login-brand-graphic-container {
+  position: relative;
+  margin-bottom: 48px;
+}
+
+.login-brand-glow-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(79, 70, 229, 0.2);
+  filter: blur(40px);
+  border-radius: 9999px;
+}
+
+.login-brand-card {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 32px;
+  border-radius: 24px;
+}
+
+.login-brand-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.login-brand-icon-wrapper {
+  height: 96px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-brand-icon {
+  color: var(--on-secondary-fixed);
+  font-size: 30px;
+}
+
+.login-brand-icon-wrapper.purple-bg {
+  background-color: rgba(79, 70, 229, 0.3);
+}
+
+.login-brand-icon-white {
+  color: white;
+  font-size: 30px;
+}
+
+.login-brand-icon-wrapper.violet-bg {
+  background-color: rgba(113, 42, 226, 0.3);
+}
+
+.login-brand-dots-container {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.login-brand-skeleton-line-long {
+  height: 12px;
+  width: 75%;
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+}
+
+.login-brand-skeleton-line-short {
+  height: 12px;
+  width: 50%;
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+}
+
+.login-brand-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--on-secondary-fixed);
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.login-brand-subtitle {
+  font-size: 18px;
+  color: rgba(37, 0, 90, 0.8);
+  max-width: 400px;
+  margin: 0 auto;
+  line-height: 1.5;
+  margin-bottom: 48px;
+}
+
+.login-testimonial-container {
+  border-top: 1px solid rgba(37, 0, 90, 0.1);
+  padding-top: 32px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-stars-container {
+  display: flex;
+  gap: 4px;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.login-star-icon {
+  font-size: 14px;
+}
+
+.login-testimonial-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--on-secondary-fixed);
+  font-style: italic;
+}
+
+.login-testimonial-author {
+  font-size: 12px;
+  color: rgba(37, 0, 90, 0.6);
+  margin-top: 4px;
+}
+
+.login-ambient-glow-top {
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 384px;
+  height: 384px;
+  background-color: rgba(79, 70, 229, 0.2);
+  border-radius: 50%;
+  filter: blur(120px);
+}
+
+.login-ambient-glow-bottom {
+  position: absolute;
+  bottom: -10%;
+  left: -10%;
+  width: 384px;
+  height: 384px;
+  background-color: rgba(138, 76, 252, 0.2);
+  border-radius: 50%;
+  filter: blur(120px);
+}

@@ -1,0 +1,172 @@
+.cp-btn-delete-all {
+  border-color: var(--error);
+  color: var(--error);
+}
+
+.cp-loading-container {
+  text-align: center;
+  padding: 48px;
+  color: var(--on-surface-variant);
+}
+
+.cp-loading-icon {
+  font-size: 48px;
+  animation: spin 1.5s linear infinite;
+}
+
+.cp-loading-text {
+  margin-top: 12px;
+}
+
+.cp-empty-card {
+  text-align: center;
+  padding: 64px 24px;
+  color: var(--on-surface-variant);
+}
+
+.cp-empty-icon {
+  font-size: 64px;
+  color: var(--outline);
+  margin-bottom: 16px;
+}
+
+.cp-empty-title {
+  color: var(--on-surface);
+}
+
+.cp-empty-desc {
+  margin: 8px 0 24px 0;
+}
+
+.cp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cp-row-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  cursor: default;
+}
+
+.cp-row-card.active {
+  border-left: 4px solid var(--primary);
+}
+
+.cp-row-card.inactive {
+  border-left: 1px solid var(--outline-variant);
+}
+
+.cp-row-left {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.cp-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cp-icon-wrapper.active {
+  background-color: var(--primary-container);
+  color: var(--primary);
+}
+
+.cp-icon-wrapper.inactive {
+  background-color: var(--surface-container-high);
+  color: var(--on-surface-variant);
+}
+
+.cp-row-title {
+  font-size: 16px;
+  margin: 0;
+  color: var(--on-surface);
+}
+
+.cp-row-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--on-surface-variant);
+  margin-top: 4px;
+}
+
+.cp-row-right {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.cp-metrics-container {
+  display: flex;
+  gap: 24px;
+  text-align: right;
+}
+
+.cp-metric-label {
+  font-size: 11px;
+  color: var(--on-surface-variant);
+  text-transform: uppercase;
+}
+
+.cp-metric-val-primary {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.cp-metric-val-secondary {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.cp-row-badge {
+  min-width: 70px;
+  text-align: center;
+  justify-content: center;
+}
+
+.cp-row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.cp-btn-edit {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.cp-btn-delete {
+  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--error);
+}
+
+.cp-btn-launch {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.cp-btn-analytics {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.cp-modal-title {
+  margin: 0;
+}
+
+.cp-modal-body-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

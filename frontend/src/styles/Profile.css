@@ -1,0 +1,159 @@
+.pr-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pr-profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.pr-avatar-container {
+  margin-bottom: 16px;
+}
+
+.pr-name {
+  color: var(--on-surface);
+  margin-bottom: 4px;
+}
+
+.pr-email {
+  color: var(--on-surface-variant);
+  margin-bottom: 16px;
+}
+
+.pr-channels-title {
+  color: var(--on-surface);
+  margin-bottom: 16px;
+  font-size: 16px;
+}
+
+.pr-channels-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pr-channel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pr-channel-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pr-channel-icon-email {
+  color: var(--primary);
+}
+
+.pr-channel-icon-sms {
+  color: var(--secondary);
+}
+
+.pr-channel-icon-wa {
+  color: #25D366;
+}
+
+.pr-channel-name {
+  font-weight: 500;
+}
+
+.pr-channel-subtext {
+  color: var(--outline);
+}
+
+.pr-edit-title {
+  color: var(--on-surface);
+  margin-bottom: 24px;
+}
+
+.pr-toast-success {
+  padding: 12px var(--spacing-md);
+  background-color: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #065f46;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pr-toast-error {
+  padding: 12px var(--spacing-md);
+  background-color: var(--error-container);
+  border-color: #fca5a5;
+  color: var(--on-error-container);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pr-toast-icon {
+  font-size: 18px;
+}
+
+.pr-toast-text {
+  font-weight: 500;
+}
+
+.pr-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pr-form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.pr-form-group {
+  margin-bottom: 0;
+}
+
+.pr-form-divider {
+  border: none;
+  border-top: 1px solid var(--outline-variant);
+  margin: 8px 0;
+}
+
+.pr-form-section-title {
+  font-weight: 600;
+  color: var(--on-surface);
+  margin-bottom: 16px;
+}
+
+.pr-form-section-subtitle {
+  color: var(--outline);
+  margin-bottom: 16px;
+}
+
+.pr-password-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pr-submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.pr-submit-btn {
+  min-width: 150px;
+}
+
+.pr-spinner {
+  animation: spin 1.5s linear infinite;
+}
