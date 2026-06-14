@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = ({ toggleMobileSidebar, title }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isProfilePage = location.pathname === '/profile';
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [user, setUser] = useState({ name: '', email: '' });
-  
+
   const [notifications, setNotifications] = useState([
     { id: 1, text: "Campaign 'Summer Promo 2026' draft was updated.", time: "10 mins ago", unread: true },
     { id: 2, text: "Imported 1,200 customer profiles successfully.", time: "1 hour ago", unread: true },
@@ -31,7 +33,7 @@ const Navbar = ({ toggleMobileSidebar, title }) => {
 
   useEffect(() => {
     loadUserData();
-    
+
     // Listen for storage events (e.g. profile page changes username/email)
     window.addEventListener('storage', loadUserData);
     return () => window.removeEventListener('storage', loadUserData);
@@ -73,15 +75,15 @@ const Navbar = ({ toggleMobileSidebar, title }) => {
   return (
     <header className="app-header">
       <div className="header-left">
-        <button 
-          className="btn-icon md-hide" 
-          onClick={toggleMobileSidebar} 
+        <button
+          className="btn-icon md-hide"
+          onClick={toggleMobileSidebar}
           style={{ display: 'none' /* Will be toggled in CSS for mobile */ }}
         >
           <span className="material-symbols-outlined">menu</span>
         </button>
-        
-        {title ? (
+
+        {isProfilePage ? null : title ? (
           <h2 className="font-headline-md text-on-surface" style={{ margin: 0 }}>{title}</h2>
         ) : (
           <div className="search-container">
@@ -94,8 +96,8 @@ const Navbar = ({ toggleMobileSidebar, title }) => {
       <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         {/* Notifications Icon and Dropdown */}
         <div ref={notificationsRef} style={{ position: 'relative' }}>
-          <button 
-            className="btn-icon" 
+          <button
+            className="btn-icon"
             aria-label="Notifications"
             onClick={() => {
               setShowNotifications(!showNotifications);
@@ -119,14 +121,14 @@ const Navbar = ({ toggleMobileSidebar, title }) => {
               }}>{unreadCount}</span>
             )}
           </button>
-          
+
           {showNotifications && (
             <div className="dropdown-menu" style={{ right: 0, width: '300px' }}>
               <div className="dropdown-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span className="font-body-md" style={{ fontWeight: '600', color: 'var(--on-surface)' }}>Notifications</span>
                 {unreadCount > 0 && (
-                  <button 
-                    onClick={markAllAsRead} 
+                  <button
+                    onClick={markAllAsRead}
                     style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: '11px', fontWeight: '500', cursor: 'pointer' }}
                   >
                     Mark all as read
@@ -141,8 +143,8 @@ const Navbar = ({ toggleMobileSidebar, title }) => {
                   </div>
                 ) : (
                   notifications.map(n => (
-                    <div 
-                      key={n.id} 
+                    <div
+                      key={n.id}
                       className={`notification-item ${n.unread ? 'unread' : ''}`}
                       onClick={() => markAsRead(n.id)}
                     >
@@ -153,8 +155,8 @@ const Navbar = ({ toggleMobileSidebar, title }) => {
                 )}
               </div>
               <div className="dropdown-footer">
-                <button 
-                  onClick={clearAllNotifications} 
+                <button
+                  onClick={clearAllNotifications}
                   style={{ background: 'none', border: 'none', color: 'var(--outline)', fontSize: '11px', cursor: 'pointer', width: '100%' }}
                 >
                   Clear all notifications
@@ -163,20 +165,35 @@ const Navbar = ({ toggleMobileSidebar, title }) => {
             </div>
           )}
         </div>
-        
+
         {/* Profile Avatar and Dropdown */}
         <div ref={profileMenuRef} style={{ position: 'relative' }}>
-          <div 
+          <div
             className="avatar-container"
             onClick={() => {
               setShowProfileMenu(!showProfileMenu);
               setShowNotifications(false);
             }}
+            style={!user.picture ? {
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'var(--primary)',
+              color: 'var(--on-primary)',
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              fontSize: '13px',
+              cursor: 'pointer'
+            } : { cursor: 'pointer' }}
           >
-            <img 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-BA9c_Y_12dzEdbLemDUURv9642axX0qcCr7FdekHjF1ih3MqyVWxDymP2c0MPKIB6bp8cgzNiFRlwxIc2YwuF8YWShkMK18g6AKn6ja_Jhwqbclfqdcc4KNSB0Otzl9B_GoocjEcfwRmSyEtDgWfYbKi6IngzadzQ6FoBjszBkNT8xpOD91rU3N5Grc2umiLd_CJgHfzx2B15HQVE1JkDStPgj9Een5nSF9K5GjDwbJe8bNEjXht45ojinv_JsAGYqQSS3LyXiXq" 
-              alt={user.name || "User profile"} 
-            />
+            {user.picture ? (
+              <img
+                src={user.picture}
+                alt={user.name || "User profile"}
+              />
+            ) : (
+              user.name ? user.name.charAt(0) : '?'
+            )}
           </div>
 
           {showProfileMenu && (
@@ -185,17 +202,17 @@ const Navbar = ({ toggleMobileSidebar, title }) => {
                 <p className="font-body-md" style={{ fontWeight: '600', color: 'var(--on-surface)', margin: 0 }}>{user.name || 'Admin User'}</p>
                 <p className="font-label-md" style={{ color: 'var(--outline)', margin: '2px 0 0 0', textOverflow: 'ellipsis', overflow: 'hidden' }}>{user.email || 'admin@xenoreach.com'}</p>
               </div>
-              
-              <Link 
-                to="/profile" 
-                className="dropdown-item" 
+
+              <Link
+                to="/profile"
+                className="dropdown-item"
                 onClick={() => setShowProfileMenu(false)}
               >
                 <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>manage_accounts</span>
                 View Profile
               </Link>
-              
-              <button 
+
+              <button
                 onClick={handleLogout}
                 className="dropdown-item"
                 style={{ borderTop: '1px solid var(--outline-variant)' }}

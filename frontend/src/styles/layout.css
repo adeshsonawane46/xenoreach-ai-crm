@@ -3,7 +3,8 @@
 .app-wrapper {
   display: flex;
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
+  max-width: 100%;
   overflow-x: hidden;
 }
 
@@ -299,6 +300,17 @@
     display: flex;
     flex-direction: column;
   }
+
+  .col-8,
+  .col-7,
+  .col-6,
+  .col-5,
+  .col-4,
+  .col-3 {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -308,6 +320,12 @@
 
   .app-sidebar.mobile-open {
     transform: translateX(0);
+  }
+
+  .sidebar-close-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
   }
 
   .app-header {
@@ -327,8 +345,10 @@
   .app-main {
     margin-left: 0;
     width: 100%;
-    padding-left: var(--spacing-md);
-    padding-right: var(--spacing-md);
+    max-width: 100%;
+    overflow-x: hidden;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .grid-2,
@@ -361,5 +381,33 @@
 @media (max-width: 1024px) {
   .hide-tablet {
     display: none !important;
+  }
+}
+
+/* Mobile overflow fix */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+img,
+svg,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    max-width: 100%;
   }
 }

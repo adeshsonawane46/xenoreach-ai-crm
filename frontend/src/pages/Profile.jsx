@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../utils/api';
 import '../styles/Profile.css';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ name: '', email: '' });
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    campaignsCount: 0,
+    segmentsCount: 0,
+    customersCount: 0
   });
-  
-  const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState(null);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const userDataStr = localStorage.getItem('xenoreach_user');
@@ -23,89 +19,61 @@ const Profile = () => {
       navigate('/login');
       return;
     }
-    
+
     try {
       const parsedUser = JSON.parse(userDataStr);
-      // If it has a data wrapper
       const userData = parsedUser.data || parsedUser;
+
+      if (!userData || !userData.email) {
+        localStorage.removeItem('xenoreach_user');
+        navigate('/login');
+        return;
+      }
+
       setUser(userData);
-      setFormData(prev => ({
-        ...prev,
-        name: userData.name || '',
-        email: userData.email || ''
-      }));
+
+      // Fetch platform activity stats dynamically from MongoDB APIs
+      Promise.all([
+        api.getCampaigns().catch(() => []),
+        api.getCustomers().catch(() => ({ data: [], count: 0 }))
+      ]).then(([campaignsRes, customersRes]) => {
+        const campaignsData = Array.isArray(campaignsRes) ? campaignsRes : (campaignsRes.data || []);
+        const customersData = Array.isArray(customersRes) ? customersRes : (customersRes.data || []);
+        const customersCount = typeof customersRes.count === 'number' ? customersRes.count : customersData.length;
+
+        // Calculate unique target segments from campaigns
+        const uniqueSegments = new Set(campaignsData.map(c => c.targetSegment).filter(Boolean));
+
+        setStats({
+          campaignsCount: campaignsData.length,
+          customersCount: customersCount,
+          segmentsCount: uniqueSegments.size
+        });
+      }).catch(err => {
+        console.error('Error fetching profile stats:', err);
+      });
+
     } catch (err) {
       console.error('Error parsing user data:', err);
+      localStorage.removeItem('xenoreach_user');
       navigate('/login');
+    } finally {
+      setLoading(false);
     }
   }, [navigate]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  if (loading) {
+    return (
+      <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+          <span className="material-symbols-outlined pr-spinner" style={{ fontSize: '48px', color: 'var(--primary)' }}>progress_activity</span>
+          <p className="font-body-md" style={{ color: 'var(--on-surface-variant)' }}>Initializing profile...</p>
+        </div>
+      </div>
+    );
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSaving(true);
-    setMessage(null);
-    setError(null);
-
-    // Validate passwords if user wants to change password
-    if (formData.newPassword) {
-      if (formData.newPassword.length < 6) {
-        setError('New password must be at least 6 characters long');
-        setSaving(false);
-        return;
-      }
-      if (formData.newPassword !== formData.confirmPassword) {
-        setError('New passwords do not match');
-        setSaving(false);
-        return;
-      }
-    }
-
-    try {
-      // Simulate API saving call
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      // Update local storage
-      const userDataStr = localStorage.getItem('xenoreach_user');
-      if (userDataStr) {
-        const parsedUser = JSON.parse(userDataStr);
-        const coreUser = parsedUser.data || parsedUser;
-        coreUser.name = formData.name;
-        coreUser.email = formData.email;
-        
-        // Save back
-        if (parsedUser.data) {
-          parsedUser.data = coreUser;
-          localStorage.setItem('xenoreach_user', JSON.stringify(parsedUser));
-        } else {
-          localStorage.setItem('xenoreach_user', JSON.stringify(coreUser));
-        }
-        
-        setUser(coreUser);
-      }
-
-      setMessage('Profile updated successfully!');
-      
-      // Clear password fields
-      setFormData(prev => ({
-        ...prev,
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-      }));
-
-      // Trigger a navbar state sync (using storage event or custom event)
-      window.dispatchEvent(new Event('storage'));
-    } catch (err) {
-      setError(err.message || 'Failed to update profile settings');
-    } finally {
-      setSaving(false);
-    }
-  };
+  const userInitials = user && user.name ? user.name.trim().charAt(0).toUpperCase() : '?';
 
   return (
     <div className="container">
@@ -113,7 +81,7 @@ const Profile = () => {
       <div className="page-header">
         <div className="page-header-title">
           <h2>Profile Settings</h2>
-          <p>Manage your account settings, credentials, and notification preferences.</p>
+          <p>Manage your account information and profile details.</p>
         </div>
       </div>
 
@@ -121,32 +89,45 @@ const Profile = () => {
         {/* Profile Card Sidebar */}
         <div className="pr-left-col">
           <div className="card pr-profile-card">
-            <div className="profile-avatar-large pr-avatar-container">
-              <img 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-BA9c_Y_12dzEdbLemDUURv9642axX0qcCr7FdekHjF1ih3MqyVWxDymP2c0MPKIB6bp8cgzNiFRlwxIc2YwuF8YWShkMK18g6AKn6ja_Jhwqbclfqdcc4KNSB0Otzl9B_GoocjEcfwRmSyEtDgWfYbKi6IngzadzQ6FoBjszBkNT8xpOD91rU3N5Grc2umiLd_CJgHfzx2B15HQVE1JkDStPgj9Een5nSF9K5GjDwbJe8bNEjXht45ojinv_JsAGYqQSS3LyXiXq" 
-                alt={user.name} 
-              />
-            </div>
+            {user.picture ? (
+              <div className="profile-avatar-large pr-avatar-container">
+                <img src={user.picture} alt={user.name} />
+              </div>
+            ) : (
+              <div className="profile-avatar-large pr-avatar-container" style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'var(--primary)',
+                color: 'var(--on-primary)',
+                fontSize: '36px',
+                fontWeight: 'bold',
+                textTransform: 'uppercase'
+              }}>
+                {userInitials}
+              </div>
+            )}
             <h3 className="font-headline-md pr-name">{user.name}</h3>
             <p className="font-body-md pr-email">{user.email}</p>
-            <span className="badge badge-primary">Administrator</span>
+            <span className={`badge ${user.role ? 'badge-primary' : 'badge-neutral'}`}>
+              {user.role || 'User'}
+            </span>
           </div>
 
-          {/* Channels Integration Status */}
+          {/* Supported Communication Channels Card */}
           <div className="card">
-            <h3 className="font-headline-md pr-channels-title">Marketing Channels</h3>
-            
+            <h3 className="font-headline-md pr-channels-title">Supported Communication Channels</h3>
+
             <div className="pr-channels-list">
               {/* Email */}
               <div className="pr-channel-row">
                 <div className="pr-channel-left">
                   <span className="material-symbols-outlined pr-channel-icon-email">mail</span>
                   <div>
-                    <p className="font-body-md pr-channel-name">Email Marketing</p>
-                    <p className="font-label-md pr-channel-subtext">Vite Mail Agent</p>
+                    <p className="font-body-md pr-channel-name">Email</p>
+                    <p className="font-label-md pr-channel-subtext">Email Campaign Channel</p>
                   </div>
                 </div>
-                <span className="badge badge-success">Connected</span>
               </div>
 
               {/* SMS */}
@@ -154,11 +135,10 @@ const Profile = () => {
                 <div className="pr-channel-left">
                   <span className="material-symbols-outlined pr-channel-icon-sms">sms</span>
                   <div>
-                    <p className="font-body-md pr-channel-name">SMS Gateways</p>
-                    <p className="font-label-md pr-channel-subtext">Twilio Gateway</p>
+                    <p className="font-body-md pr-channel-name">SMS</p>
+                    <p className="font-label-md pr-channel-subtext">SMS Campaign Channel</p>
                   </div>
                 </div>
-                <span className="badge badge-neutral">Inactive</span>
               </div>
 
               {/* WhatsApp */}
@@ -166,128 +146,130 @@ const Profile = () => {
                 <div className="pr-channel-left">
                   <span className="material-symbols-outlined pr-channel-icon-wa">chat</span>
                   <div>
-                    <p className="font-body-md pr-channel-name">WhatsApp Business</p>
-                    <p className="font-label-md pr-channel-subtext">Meta API</p>
+                    <p className="font-body-md pr-channel-name">WhatsApp</p>
+                    <p className="font-label-md pr-channel-subtext">WhatsApp Campaign Channel</p>
                   </div>
                 </div>
-                <span className="badge badge-success">Connected</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Profile Edit Settings Card */}
-        <div className="card">
-          <h3 className="font-headline-md pr-edit-title">Edit Account Profile</h3>
+        {/* Right Column Stack */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {/* Account Information Card */}
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <h3 className="font-headline-md pr-edit-title" style={{ margin: 0 }}>Account Information</h3>
 
-          {message && (
-            <div className="card pr-toast-success">
-              <span className="material-symbols-outlined pr-toast-icon">check_circle</span>
-              <span className="font-body-md pr-toast-text">{message}</span>
-            </div>
-          )}
-
-          {error && (
-            <div className="card pr-toast-error">
-              <span className="material-symbols-outlined pr-toast-icon">error</span>
-              <span className="font-body-md pr-toast-text">{error}</span>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="pr-form">
-            <div className="pr-form-grid-2">
-              <div className="form-group pr-form-group">
-                <label className="form-label">Full Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              <div className="form-group pr-form-group">
-                <label className="form-label">Email Address</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                />
-              </div>
-            </div>
-
-            <hr className="pr-form-divider" />
-
-            <div>
-              <h4 className="font-body-lg pr-form-section-title">Update Password</h4>
-              <p className="font-label-md pr-form-section-subtitle">Leave blank if you don't want to change your password.</p>
-              
-              <div className="pr-password-list">
+            <div className="pr-form">
+              <div className="pr-form-grid-2">
                 <div className="form-group pr-form-group">
-                  <label className="form-label">Current Password</label>
+                  <label className="form-label">Full Name</label>
                   <input
-                    type="password"
-                    name="currentPassword"
-                    value={formData.currentPassword}
-                    onChange={handleChange}
+                    type="text"
+                    value={user.name || ''}
                     className="form-input"
-                    placeholder="••••••••"
+                    readOnly
+                    style={{ backgroundColor: 'var(--surface-container-low)', cursor: 'default' }}
                   />
                 </div>
 
-                <div className="pr-form-grid-2">
-                  <div className="form-group pr-form-group">
-                    <label className="form-label">New Password</label>
-                    <input
-                      type="password"
-                      name="newPassword"
-                      value={formData.newPassword}
-                      onChange={handleChange}
-                      className="form-input"
-                      placeholder="At least 6 characters"
-                    />
-                  </div>
+                <div className="form-group pr-form-group">
+                  <label className="form-label">Email Address</label>
+                  <input
+                    type="email"
+                    value={user.email || ''}
+                    className="form-input"
+                    readOnly
+                    style={{ backgroundColor: 'var(--surface-container-low)', cursor: 'default' }}
+                  />
+                </div>
+              </div>
 
-                  <div className="form-group pr-form-group">
-                    <label className="form-label">Confirm New Password</label>
-                    <input
-                      type="password"
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={handleChange}
-                      className="form-input"
-                      placeholder="At least 6 characters"
-                    />
-                  </div>
+              <div className="pr-form-grid-2">
+                <div className="form-group pr-form-group">
+                  <label className="form-label">Account Status</label>
+                  <input
+                    type="text"
+                    value="Active"
+                    className="form-input"
+                    readOnly
+                    style={{ backgroundColor: 'var(--surface-container-low)', cursor: 'default', color: '#059669', fontWeight: 'bold' }}
+                  />
+                </div>
+
+                <div className="form-group pr-form-group">
+                  <label className="form-label">User Role</label>
+                  <input
+                    type="text"
+                    value={user.role || 'User'}
+                    className="form-input"
+                    readOnly
+                    style={{ backgroundColor: 'var(--surface-container-low)', cursor: 'default' }}
+                  />
                 </div>
               </div>
             </div>
+          </div>
 
-            <div className="pr-submit-row">
-              <button
-                type="submit"
-                disabled={saving}
-                className="btn btn-primary pr-submit-btn"
-              >
-                {saving ? (
-                  <>
-                    <span className="material-symbols-outlined pr-spinner">progress_activity</span>
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <span className="material-symbols-outlined">save</span>
-                    Save Settings
-                  </>
-                )}
-              </button>
+          {/* Account Activity Card */}
+          <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <h3 className="font-headline-md pr-edit-title" style={{ margin: 0 }}>Account Activity</h3>
+
+            <div className="pr-form-grid-2">
+              <div style={{
+                padding: '16px',
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'var(--surface-container-low)',
+                border: '1px solid var(--outline-variant)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+              }}>
+                <span className="font-label-sm" style={{ color: 'var(--outline)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Campaigns Created</span>
+                <span className="font-headline-lg" style={{ color: 'var(--on-surface)', margin: 0 }}>{stats.campaignsCount}</span>
+              </div>
+
+              <div style={{
+                padding: '16px',
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'var(--surface-container-low)',
+                border: '1px solid var(--outline-variant)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+              }}>
+                <span className="font-label-sm" style={{ color: 'var(--outline)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Segments Created</span>
+                <span className="font-headline-lg" style={{ color: 'var(--on-surface)', margin: 0 }}>{stats.segmentsCount}</span>
+              </div>
+
+              <div style={{
+                padding: '16px',
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'var(--surface-container-low)',
+                border: '1px solid var(--outline-variant)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+              }}>
+                <span className="font-label-sm" style={{ color: 'var(--outline)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Customers Managed</span>
+                <span className="font-headline-lg" style={{ color: 'var(--on-surface)', margin: 0 }}>{stats.customersCount}</span>
+              </div>
+
+              <div style={{
+                padding: '16px',
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'var(--surface-container-low)',
+                border: '1px solid var(--outline-variant)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+              }}>
+                <span className="font-label-sm" style={{ color: 'var(--outline)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Last Login Session</span>
+                <span className="font-body-lg" style={{ color: 'var(--on-surface)', fontWeight: 600, margin: 'auto 0' }}>{user.lastLogin || 'Current Session'}</span>
+              </div>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
@@ -295,3 +277,4 @@ const Profile = () => {
 };
 
 export default Profile;
+

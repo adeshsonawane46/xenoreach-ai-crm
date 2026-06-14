@@ -11,8 +11,8 @@ const Sidebar = ({ isMobileOpen, toggleMobileSidebar }) => {
 
   return (
     <aside className={`app-sidebar ${isMobileOpen ? 'mobile-open' : ''}`}>
-      <div className="sidebar-logo">
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div className="sidebar-logo" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={isMobileOpen ? toggleMobileSidebar : undefined}>
           <div style={{
             width: '32px',
             height: '32px',
@@ -32,6 +32,14 @@ const Sidebar = ({ isMobileOpen, toggleMobileSidebar }) => {
             <p>Marketing CRM</p>
           </div>
         </Link>
+        <button 
+          className="btn-icon sidebar-close-btn" 
+          onClick={toggleMobileSidebar}
+          aria-label="Close menu"
+          style={{ display: 'none', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>close</span>
+        </button>
       </div>
 
       <div className="sidebar-actions">

@@ -45,7 +45,8 @@ const Login = () => {
         localStorage.setItem('xenoreach_user', JSON.stringify({ 
           email: response.data.email, 
           name: response.data.name,
-          token: response.data.token 
+          token: response.data.token,
+          provider: 'email'
         }));
         navigate('/dashboard');
       } else {
@@ -174,13 +175,20 @@ const Login = () => {
         <GoogleLogin
           onSuccess={async (credentialResponse) => {
             try {
+              const payloadBase64 = credentialResponse.credential.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+              const decoded = JSON.parse(atob(payloadBase64));
+              
               const response = await api.googleLogin(
                 credentialResponse.credential
               );
             
               localStorage.setItem(
                 'xenoreach_user',
-                JSON.stringify(response.data)
+                JSON.stringify({
+                  ...response.data,
+                  provider: 'google',
+                  picture: decoded?.picture || null
+                })
               );
             
               navigate('/dashboard');

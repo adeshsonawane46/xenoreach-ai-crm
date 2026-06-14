@@ -36,7 +36,7 @@ const PrivateLayout = ({ children }) => {
     if (path.startsWith('/campaign-review')) return 'Campaign Review';
     if (path === '/analytics') return 'Performance Analytics';
     if (path === '/insights') return 'AI Insights';
-    if (path === '/profile') return 'Profile Settings';
+    if (path === '/profile') return '';
     return '';
   };
 
@@ -47,7 +47,7 @@ const PrivateLayout = ({ children }) => {
   return (
     <div className="app-wrapper">
       <Sidebar isMobileOpen={mobileSidebarOpen} toggleMobileSidebar={toggleMobileSidebar} />
-      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100vh' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100vh', minWidth: 0, width: '100%', maxWidth: '100%' }}>
         <Navbar toggleMobileSidebar={toggleMobileSidebar} title={getPageTitle()} />
         <main className="app-main">
           {children}
