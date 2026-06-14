@@ -89,7 +89,7 @@ export const launchCampaign = async (req, res, next) => {
     await campaign.save();
 
     // Dispatch asynchronous events to the Channel Service
-    const CHANNEL_SERVICE_URL = process.env.CHANNEL_SERVICE_URL || 'http://localhost:5001/send';
+    const CHANNEL_SERVICE_URL = process.env.CHANNEL_SERVICE_URL || 'https://xenoreach-ai-crm-1.onrender.com';
 
     customers.forEach(customer => {
       const firstName = customer.name ? customer.name.split(' ')[0] : 'Customer';
