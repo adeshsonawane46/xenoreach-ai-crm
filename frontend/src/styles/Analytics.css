@@ -475,3 +475,40 @@
     opacity: 1;
   }
 }
+
+/* Responsive Styles for Analytics Page */
+@media (max-width: 1200px) {
+  .an-kpis-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .an-kpis-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  .an-chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .an-kpis-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .an-chart-legend {
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .an-funnel-step {
+    padding: 0 var(--spacing-sm);
+    font-size: 12px;
+  }
+}

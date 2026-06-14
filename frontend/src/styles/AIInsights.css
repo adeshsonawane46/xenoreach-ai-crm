@@ -657,3 +657,52 @@
     opacity: 1;
   }
 }
+
+/* Responsive Styles for AI Insights */
+@media (max-width: 1024px) {
+  .ai-bento-item {
+    border-right: none;
+    border-bottom: 1px solid var(--outline-variant);
+  }
+
+  .ai-bento-action-box {
+    border-top: 1px solid var(--outline-variant);
+  }
+}
+
+@media (max-width: 768px) {
+  .ai-summary-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+  }
+
+  .ai-summary-icon-box {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .ai-modal-meta-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .ai-modal-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+
+  .ai-modal-footer button {
+    width: 100%;
+  }
+
+  .ai-toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    transform: none;
+    animation: slide-up 0.3s ease-out;
+  }
+}

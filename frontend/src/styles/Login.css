@@ -360,3 +360,47 @@
   border-radius: 50%;
   filter: blur(120px);
 }
+
+/* Responsive Styles for Login Page */
+@media (max-width: 992px) {
+  .login-brand-side {
+    display: none;
+  }
+
+  .login-form-side {
+    max-width: 100%;
+    padding: 48px 32px;
+    justify-content: center;
+    border-right: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-form-side {
+    padding: 32px 16px;
+  }
+
+  .login-logo-container {
+    margin-bottom: 32px;
+  }
+
+  .login-title {
+    font-size: 24px;
+  }
+
+  .login-subtitle {
+    font-size: 14px;
+  }
+
+  .login-divider-container {
+    margin: 24px 0;
+  }
+
+  .login-social-grid {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .login-footer-text {
+    padding-top: 24px;
+  }
+}

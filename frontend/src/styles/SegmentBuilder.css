@@ -386,3 +386,84 @@
 .sb-ai-result-btn-primary {
   flex: 1;
 }
+
+/* Responsive Styles for Segment Builder */
+@media (max-width: 768px) {
+  .sb-rule-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+  }
+
+  .sb-rule-field {
+    width: 100%;
+    font-weight: 600;
+  }
+
+  .sb-rule-select {
+    width: 100%;
+    border: 1px solid var(--outline-variant);
+    border-radius: var(--radius-default);
+    background-color: var(--surface-container-lowest);
+    height: 40px;
+    padding: 0 var(--spacing-sm);
+  }
+
+  .sb-rule-input-days-wrapper {
+    width: 100%;
+  }
+
+  .sb-rule-input-days {
+    flex: 1;
+    height: 40px;
+  }
+
+  .sb-rule-input-spend,
+  .sb-rule-input-city {
+    height: 40px;
+  }
+
+  .sb-ai-form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+
+  .sb-ai-presets-container {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .sb-ai-preset-btn {
+    text-align: left;
+    padding: 8px 12px;
+  }
+
+  .sb-ai-form-actions button[type="submit"] {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .sb-ai-result-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+
+  .sb-ai-result-stats {
+    text-align: left;
+  }
+
+  .sb-ai-result-actions {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .sb-ai-result-btn-secondary,
+  .sb-ai-result-btn-primary {
+    width: 100%;
+  }
+}

@@ -170,3 +170,66 @@
   flex-direction: column;
   gap: 16px;
 }
+
+/* Responsive Styles for Campaigns Page */
+@media (max-width: 768px) {
+  .cp-row-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+    padding: 16px;
+  }
+
+  .cp-row-left {
+    gap: var(--spacing-md);
+  }
+
+  .cp-row-right {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+    width: 100%;
+    border-top: 1px solid var(--outline-variant);
+    padding-top: var(--spacing-md);
+  }
+
+  .cp-metrics-container {
+    justify-content: space-between;
+    text-align: left;
+    width: 100%;
+  }
+
+  .cp-row-badge {
+    align-self: flex-start;
+  }
+
+  .cp-row-actions {
+    width: 100%;
+    gap: var(--spacing-sm);
+  }
+
+  .cp-row-actions button,
+  .cp-row-actions a {
+    flex: 1;
+    text-align: center;
+    padding: 8px var(--spacing-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .cp-row-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .cp-row-meta {
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .cp-metrics-container {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+}

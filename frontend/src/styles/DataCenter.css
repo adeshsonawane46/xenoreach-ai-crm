@@ -249,3 +249,58 @@
 .dc-modal-edit-form-group {
   margin-bottom: 0;
 }
+
+/* Responsive Styles for CRM Data Center */
+@media (max-width: 768px) {
+  .dc-filter-bar {
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .dc-search-container {
+    max-width: 100%;
+  }
+
+  .dc-card-body {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 600px) {
+  .dc-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dc-filter-bar button {
+    width: 100%;
+  }
+
+  .dc-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .dc-card-header-actions {
+    width: 100%;
+    display: flex;
+    gap: var(--spacing-sm);
+  }
+
+  .dc-card-header-actions button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .dc-modal-view-grid-2 {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
+  .dc-modal-view-body-list {
+    gap: var(--spacing-md);
+  }
+}

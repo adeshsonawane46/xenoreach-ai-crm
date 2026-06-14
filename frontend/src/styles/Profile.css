@@ -157,3 +157,33 @@
 .pr-spinner {
   animation: spin 1.5s linear infinite;
 }
+
+/* Responsive Styles for Profile Page */
+@media (max-width: 768px) {
+  .pr-form-grid-2 {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .pr-submit-row {
+    justify-content: stretch;
+  }
+
+  .pr-submit-btn {
+    width: 100%;
+  }
+
+  .pr-channel-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--outline-variant);
+  }
+
+  .pr-channel-row:last-child {
+    border-bottom: none;
+  }
+}
