@@ -340,14 +340,21 @@
   .page-header {
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
   }
 
   .page-header-actions {
     width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
   }
 
-  .page-header-actions button {
-    flex: 1;
+  .page-header-actions button,
+  .page-header-actions a {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
   }
 }
 
